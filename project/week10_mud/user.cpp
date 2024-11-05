@@ -1,17 +1,15 @@
 #include "user.h"
 
-int User::GetHP()
+User::User() : health(20) {}
+
+void User::InCreaseHP(int inc_hp)
 {
-    health += 2;
-}
-void User::InCreaseHP()
-{
-    health += 2;
+    health += inc_hp;
 }
 
-void User::DeCreaseHP()
+void User::DeCreaseHP(int dec_hp)
 {
-    health -= 2;
+    health -= dec_hp;
 }
 int User::GetHP()
 {
