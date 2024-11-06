@@ -3,7 +3,17 @@
         "xstring": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "stack": "cpp",
+        "vector": "cpp",
+        "xlocinfo": "cpp",
+        "xutility": "cpp",
+        "format": "cpp",
+        "cmath": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

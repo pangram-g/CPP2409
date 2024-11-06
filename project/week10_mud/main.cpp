@@ -1,25 +1,26 @@
 #include "user.h"
+#include <vector>
 
 const int mapX = 5;
 const int mapY = 5;
 
 // 사용자 정의 함수
 bool checkXY(int user_x, int mapX, int user_y, int mapY);
-void displayMap(int map[][mapX], int user_x, int user_y);
-bool checkGoal(int map[][mapX], int user_x, int user_y);
-void checkState(int map[][mapX], int user_x, int user_y, User &user);
-void movePlayer(int &user_x, int &user_y, int ax, int ay, int map[][mapX], User &user);
+void displayMap(vector<vector<int>> &map, int user_x, int user_y);
+bool checkGoal(vector<vector<int>> &map, int user_x, int user_y);
+void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user);
+void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user);
 bool CheckUser(User user);
 
 // 메인  함수
 int main()
 {
     // 0은 빈 공간, 1은 아이템, 2는 적, 3은 포션, 4는 목적지
-    int map[mapY][mapX] = {{0, 1, 2, 0, 4},
-                           {1, 0, 0, 2, 0},
-                           {0, 0, 0, 0, 0},
-                           {0, 2, 3, 0, 0},
-                           {3, 0, 0, 0, 2}};
+    vector<vector<int>> map = {{0, 1, 2, 0, 4},
+                               {1, 0, 0, 2, 0},
+                               {0, 0, 0, 0, 0},
+                               {0, 2, 3, 0, 0},
+                               {3, 0, 0, 0, 2}};
 
     // 유저에 관한 변수, 객체
     int user_x = 0; // 가로축 위치
@@ -93,7 +94,7 @@ int main()
 
 // 플레이어 움직임(상하좌우) 간결화 함수
 // 포인터를 사용해 함수 밖의 좌표까지 영향이 미치게함
-void movePlayer(int &user_x, int &user_y, int ax, int ay, int map[][mapX], User &user)
+void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user)
 {
     int new_x = user_x + ax;
     int new_y = user_y + ay;
@@ -128,7 +129,7 @@ bool CheckUser(User user)
 }
 
 // 지도와 사용자 위치 출력하는 함수
-void displayMap(int map[][mapX], int user_x, int user_y)
+void displayMap(vector<vector<int>> &map, int user_x, int user_y)
 {
     for (int i = 0; i < mapY; i++)
     {
@@ -178,7 +179,7 @@ bool checkXY(int user_x, int mapX, int user_y, int mapY)
 }
 
 // 유저의 위치가 목적지인지 체크하는 함수
-bool checkGoal(int map[][mapX], int user_x, int user_y)
+bool checkGoal(vector<vector<int>> &map, int user_x, int user_y)
 {
     // 목적지 도착하면
     if (map[user_y][user_x] == 4)
@@ -189,7 +190,7 @@ bool checkGoal(int map[][mapX], int user_x, int user_y)
 }
 
 // 유저의 위치를 확인하는 함수
-void checkState(int map[][mapX], int user_x, int user_y, User &user)
+void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user)
 {
     if (map[user_y][user_x] == 1)
     {
