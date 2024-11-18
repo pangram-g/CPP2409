@@ -4,7 +4,7 @@
 const int mapX = 5;
 const int mapY = 5;
 
-// »ç¿ëÀÚ Á¤ÀÇ ÇÔ¼ö
+// ì‚¬ìš©ì ì •ì˜ í•¨ìˆ˜
 bool checkXY(int user_x, int mapX, int user_y, int mapY);
 void displayMap(vector<vector<int>> &map, int user_x, int user_y);
 bool checkGoal(vector<vector<int>> &map, int user_x, int user_y);
@@ -12,83 +12,83 @@ void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user);
 void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user);
 bool CheckUser(User user);
 
-// ¸ŞÀÎ  ÇÔ¼ö
+// ë©”ì¸  í•¨ìˆ˜
 int main()
 {
-    // 0Àº ºó °ø°£, 1Àº ¾ÆÀÌÅÛ, 2´Â Àû, 3Àº Æ÷¼Ç, 4´Â ¸ñÀûÁö
+    // 0ì€ ë¹ˆ ê³µê°„, 1ì€ ì•„ì´í…œ, 2ëŠ” ì , 3ì€ í¬ì…˜, 4ëŠ” ëª©ì ì§€
     vector<vector<int>> map = {{0, 1, 2, 0, 4},
                                {1, 0, 0, 2, 0},
                                {0, 0, 0, 0, 0},
                                {0, 2, 3, 0, 0},
                                {3, 0, 0, 0, 2}};
 
-    // À¯Àú¿¡ °üÇÑ º¯¼ö, °´Ã¼
-    int user_x = 0; // °¡·ÎÃà À§Ä¡
-    int user_y = 0; // ¼¼·ÎÃà À§Ä¡
-    User user;      // ´ÜÀÏ À¯Àú °´Ã¼ »ı¼º
+    // ìœ ì €ì— ê´€í•œ ë³€ìˆ˜, ê°ì²´
+    int user_x = 0; // ê°€ë¡œì¶• ìœ„ì¹˜
+    int user_y = 0; // ì„¸ë¡œì¶• ìœ„ì¹˜
+    User user;      // ë‹¨ì¼ ìœ ì € ê°ì²´ ìƒì„±
 
-    // °ÔÀÓ ½ÃÀÛ
+    // ê²Œì„ ì‹œì‘
     while (1)
-    { // »ç¿ëÀÚ¿¡°Ô °è¼Ó ÀÔ·Â¹Ş±â À§ÇØ ¹«ÇÑ ·çÇÁ
+    { // ì‚¬ìš©ìì—ê²Œ ê³„ì† ì…ë ¥ë°›ê¸° ìœ„í•´ ë¬´í•œ ë£¨í”„
 
-        // »ç¿ëÀÚÀÇ ÀÔ·ÂÀ» ÀúÀåÇÒ º¯¼ö
+        // ì‚¬ìš©ìì˜ ì…ë ¥ì„ ì €ì¥í•  ë³€ìˆ˜
         string user_input = "";
 
-        cout << "¸í·É¾î¸¦ ÀÔ·ÂÇÏ¼¼¿ä (»ó,ÇÏ,ÁÂ,¿ì,Áöµµ,Á¤º¸,Á¾·á): ";
+        cout << "ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•˜ì„¸ìš” (ìƒ,í•˜,ì¢Œ,ìš°,ì§€ë„,ì •ë³´,ì¢…ë£Œ): ";
         cin >> user_input;
 
-        // ÇÃ·¹ÀÌ¾î »óÇÏÁÂ¿ì ¿òÁ÷ÀÓ °£°áÈ­
-        if (user_input == "»ó")
+        // í”Œë ˆì´ì–´ ìƒí•˜ì¢Œìš° ì›€ì§ì„ ê°„ê²°í™”
+        if (user_input == "ìƒ")
         {
             movePlayer(user_x, user_y, 0, -1, map, user);
         }
-        else if (user_input == "ÇÏ")
+        else if (user_input == "í•˜")
         {
             movePlayer(user_x, user_y, 0, 1, map, user);
         }
-        else if (user_input == "ÁÂ")
+        else if (user_input == "ì¢Œ")
         {
             movePlayer(user_x, user_y, -1, 0, map, user);
         }
-        else if (user_input == "¿ì")
+        else if (user_input == "ìš°")
         {
             movePlayer(user_x, user_y, 1, 0, map, user);
         }
-        else if (user_input == "Áöµµ")
+        else if (user_input == "ì§€ë„")
         {
             displayMap(map, user_x, user_y);
         }
-        else if (user_input == "Á¤º¸")
+        else if (user_input == "ì •ë³´")
         {
             cout << user << endl;
             continue;
         }
-        else if (user_input == "Á¾·á")
+        else if (user_input == "ì¢…ë£Œ")
         {
-            cout << "Á¾·áÇÕ´Ï´Ù.";
+            cout << "ì¢…ë£Œí•©ë‹ˆë‹¤.";
             break;
         }
         else
         {
-            cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù." << endl;
+            cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤." << endl;
             continue;
         }
         checkState(map, user_x, user_y, user);
 
-        // ¸ñÀûÁö¿¡ µµ´ŞÇß´ÂÁö Ã¼Å©
+        // ëª©ì ì§€ì— ë„ë‹¬í–ˆëŠ”ì§€ ì²´í¬
         bool finish = checkGoal(map, user_x, user_y);
         if (finish == true)
         {
-            cout << "¸ñÀûÁö¿¡ µµÂøÇß½À´Ï´Ù! ÃàÇÏÇÕ´Ï´Ù!" << endl;
-            cout << "°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù." << endl;
+            cout << "ëª©ì ì§€ì— ë„ì°©í–ˆìŠµë‹ˆë‹¤! ì¶•í•˜í•©ë‹ˆë‹¤!" << endl;
+            cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
             break;
         }
 
-        // HP°¡ 0ÀÎÁö È®ÀÎ
+        // HPê°€ 0ì¸ì§€ í™•ì¸
         if (CheckUser(user) == false)
         {
-            cout << " HP°¡ 0 ÀÌÇÏ°¡ µÇ¾ú½À´Ï´Ù. ½ÇÆĞÇß½À´Ï´Ù." << endl;
-            cout << " °ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù." << endl;
+            cout << " HPê°€ 0 ì´í•˜ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤. ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤." << endl;
+            cout << " ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
             break;
         }
     }
@@ -96,8 +96,8 @@ int main()
     return 0;
 }
 
-// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ(»óÇÏÁÂ¿ì) °£°áÈ­ ÇÔ¼ö
-// Æ÷ÀÎÅÍ¸¦ »ç¿ëÇØ ÇÔ¼ö ¹ÛÀÇ ÁÂÇ¥±îÁö ¿µÇâÀÌ ¹ÌÄ¡°ÔÇÔ
+// í”Œë ˆì´ì–´ ì›€ì§ì„(ìƒí•˜ì¢Œìš°) ê°„ê²°í™” í•¨ìˆ˜
+// í¬ì¸í„°ë¥¼ ì‚¬ìš©í•´ í•¨ìˆ˜ ë°–ì˜ ì¢Œí‘œê¹Œì§€ ì˜í–¥ì´ ë¯¸ì¹˜ê²Œí•¨
 void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user)
 {
     int new_x = user_x + ax;
@@ -105,21 +105,21 @@ void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &m
 
     if (checkXY(new_x, mapX, new_y, mapY) == false)
     {
-        cout << "¸ÊÀ» ¹ş¾î³µ½À´Ï´Ù. ´Ù½Ã µ¹¾Æ°©´Ï´Ù." << endl;
+        cout << "ë§µì„ ë²—ì–´ë‚¬ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ëŒì•„ê°‘ë‹ˆë‹¤." << endl;
     }
     else
     {
         user_x = new_x;
         user_y = new_y;
-        user.DeCreaseHP(1); // Á¤»ó ÀÌµ¿ ½Ã HP 1 °¨¼Ò
+        user.DeCreaseHP(1); // ì •ìƒ ì´ë™ ì‹œ HP 1 ê°ì†Œ
         if (ay == -1)
-            cout << "À§·Î ÇÑ Ä­ ¿Ã¶ó°©´Ï´Ù." << endl;
+            cout << "ìœ„ë¡œ í•œ ì¹¸ ì˜¬ë¼ê°‘ë‹ˆë‹¤." << endl;
         else if (ay == 1)
-            cout << "¾Æ·¡·Î ÇÑ Ä­ ³»·Á°©´Ï´Ù." << endl;
+            cout << "ì•„ë˜ë¡œ í•œ ì¹¸ ë‚´ë ¤ê°‘ë‹ˆë‹¤." << endl;
         else if (ax == -1)
-            cout << "¿ŞÂÊÀ¸·Î ÇÑ Ä­ ÀÌµ¿ÇÕ´Ï´Ù." << endl;
+            cout << "ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸ ì´ë™í•©ë‹ˆë‹¤." << endl;
         else if (ax == 1)
-            cout << "¿À¸¥ÂÊÀ¸·Î ÇÑ Ä­ ÀÌµ¿ÇÕ´Ï´Ù." << endl;
+            cout << "ì˜¤ë¥¸ìª½ìœ¼ë¡œ í•œ ì¹¸ ì´ë™í•©ë‹ˆë‹¤." << endl;
         displayMap(map, user_x, user_y);
     }
 }
@@ -132,7 +132,7 @@ bool CheckUser(User user)
         return false;
 }
 
-// Áöµµ¿Í »ç¿ëÀÚ À§Ä¡ Ãâ·ÂÇÏ´Â ÇÔ¼ö
+// ì§€ë„ì™€ ì‚¬ìš©ì ìœ„ì¹˜ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
 void displayMap(vector<vector<int>> &map, int user_x, int user_y)
 {
     for (int i = 0; i < mapY; i++)
@@ -141,7 +141,7 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y)
         {
             if (i == user_y && j == user_x)
             {
-                cout << " USER |"; // ¾ç ¿· 1Ä­ °ø¹é
+                cout << " USER |"; // ì–‘ ì˜† 1ì¹¸ ê³µë°±
             }
             else
             {
@@ -149,19 +149,19 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y)
                 switch (posState)
                 {
                 case 0:
-                    cout << "      |"; // 6Ä­ °ø¹é
+                    cout << "      |"; // 6ì¹¸ ê³µë°±
                     break;
                 case 1:
-                    cout << "¾ÆÀÌÅÛ|";
+                    cout << "ì•„ì´í…œ|";
                     break;
                 case 2:
-                    cout << "  Àû  |"; // ¾ç ¿· 2Ä­ °ø¹é
+                    cout << "  ì   |"; // ì–‘ ì˜† 2ì¹¸ ê³µë°±
                     break;
                 case 3:
-                    cout << " Æ÷¼Ç |"; // ¾ç ¿· 1Ä­ °ø¹é
+                    cout << " í¬ì…˜ |"; // ì–‘ ì˜† 1ì¹¸ ê³µë°±
                     break;
                 case 4:
-                    cout << "¸ñÀûÁö|";
+                    cout << "ëª©ì ì§€|";
                     break;
                 }
             }
@@ -171,7 +171,7 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y)
     }
 }
 
-// ÀÌµ¿ÇÏ·Á´Â °÷ÀÌ À¯È¿ÇÑ ÁÂÇ¥ÀÎÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö
+// ì´ë™í•˜ë ¤ëŠ” ê³³ì´ ìœ íš¨í•œ ì¢Œí‘œì¸ì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
 bool checkXY(int user_x, int mapX, int user_y, int mapY)
 {
     bool checkFlag = false;
@@ -182,10 +182,10 @@ bool checkXY(int user_x, int mapX, int user_y, int mapY)
     return checkFlag;
 }
 
-// À¯ÀúÀÇ À§Ä¡°¡ ¸ñÀûÁöÀÎÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö
+// ìœ ì €ì˜ ìœ„ì¹˜ê°€ ëª©ì ì§€ì¸ì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
 bool checkGoal(vector<vector<int>> &map, int user_x, int user_y)
 {
-    // ¸ñÀûÁö µµÂøÇÏ¸é
+    // ëª©ì ì§€ ë„ì°©í•˜ë©´
     if (map[user_y][user_x] == 4)
     {
         return true;
@@ -193,22 +193,22 @@ bool checkGoal(vector<vector<int>> &map, int user_x, int user_y)
     return false;
 }
 
-// À¯ÀúÀÇ À§Ä¡¸¦ È®ÀÎÇÏ´Â ÇÔ¼ö
+// ìœ ì €ì˜ ìœ„ì¹˜ë¥¼ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
 void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user)
 {
     if (map[user_y][user_x] == 1)
     {
-        cout << "¾ÆÀÌÅÛÀÌ ÀÖ½À´Ï´Ù." << endl;
+        cout << "ì•„ì´í…œì´ ìˆìŠµë‹ˆë‹¤." << endl;
         user.InCreaseItem(1);
     }
     if (map[user_y][user_x] == 2)
     {
-        cout << "ÀûÀÌ ÀÖ½À´Ï´Ù. HP°¡ 2 ÁÙ¾îµì´Ï´Ù" << endl;
-        user.DeCreaseHP(2); // Àû°ú Á¶¿ì ÈÄ HP 2°¨¼Ò
+        cout << "ì ì´ ìˆìŠµë‹ˆë‹¤. HPê°€ 2 ì¤„ì–´ë“­ë‹ˆë‹¤" << endl;
+        user.DeCreaseHP(2); // ì ê³¼ ì¡°ìš° í›„ HP 2ê°ì†Œ
     }
     if (map[user_y][user_x] == 3)
     {
-        cout << "Æ÷¼ÇÀÌ ÀÖ½À´Ï´Ù. HP°¡ 2 Áõ°¡ÇÕ´Ï´Ù" << endl;
-        user.InCreaseHP(2); // Æ÷¼Ç ¾òÀº ÈÄ HP 2Áõ°¡
+        cout << "í¬ì…˜ì´ ìˆìŠµë‹ˆë‹¤. HPê°€ 2 ì¦ê°€í•©ë‹ˆë‹¤" << endl;
+        user.InCreaseHP(2); // í¬ì…˜ ì–»ì€ í›„ HP 2ì¦ê°€
     }
 }

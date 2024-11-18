@@ -27,6 +27,6 @@ int User::GetHP()
 
 ostream &operator<<(ostream &os, const User &user)
 {
-    os << "ÇöÀç HP´Â " << user.health << " ÀÌ°í, ¸ÔÀº ¾ÆÀÌÅÛÀº ÃÑ " << user.itemCnt << " °³ ÀÔ´Ï´Ù" << endl;
+    os << "í˜„ìž¬ HPëŠ” " << user.health << " ì´ê³ , ë¨¹ì€ ì•„ì´í…œì€ ì´ " << user.itemCnt << " ê°œ ìž…ë‹ˆë‹¤" << endl;
     return os;
 }
