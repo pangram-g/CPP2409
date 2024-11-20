@@ -20,13 +20,16 @@ public:
     void DoAttack();
 };
 
-class Magicain : User
+class Magician : public User
 {
-}
+public:
+    void DoAttack();
+};
 
-class Warrior : User
+class Warrior : public User
 {
-}
+public:
+    void DoAttack();
+};
 
-ostream &
-operator<<(ostream &os, const User &user);
+ostream &operator<<(ostream &os, const User &user);

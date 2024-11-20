@@ -4,100 +4,136 @@
 const int mapX = 5;
 const int mapY = 5;
 
-// ì‚¬ìš©ì ì •ì˜ í•¨ìˆ˜
+// »ç¿ëÀÚ Á¤ÀÇ ÇÔ¼ö
 bool checkXY(int user_x, int mapX, int user_y, int mapY);
-void displayMap(vector<vector<int>> &map, int user_x, int user_y);
+void displayMap(vector<vector<int>> &map, int m_x, int m_y, int w_x, int w_y);
 bool checkGoal(vector<vector<int>> &map, int user_x, int user_y);
 void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user);
 void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user);
 bool CheckUser(User user);
 
-// ë©”ì¸  í•¨ìˆ˜
+// ¸ŞÀÎ  ÇÔ¼ö
 int main()
 {
-    // 0ì€ ë¹ˆ ê³µê°„, 1ì€ ì•„ì´í…œ, 2ëŠ” ì , 3ì€ í¬ì…˜, 4ëŠ” ëª©ì ì§€
+    // 0Àº ºó °ø°£, 1Àº ¾ÆÀÌÅÛ, 2´Â Àû, 3Àº Æ÷¼Ç, 4´Â ¸ñÀûÁö
     vector<vector<int>> map = {{0, 1, 2, 0, 4},
                                {1, 0, 0, 2, 0},
                                {0, 0, 0, 0, 0},
                                {0, 2, 3, 0, 0},
                                {3, 0, 0, 0, 2}};
 
-    // ìœ ì €ì— ê´€í•œ ë³€ìˆ˜, ê°ì²´
-    int user_x = 0; // ê°€ë¡œì¶• ìœ„ì¹˜
-    int user_y = 0; // ì„¸ë¡œì¶• ìœ„ì¹˜
-    User user;      // ë‹¨ì¼ ìœ ì € ê°ì²´ ìƒì„±
+    // À¯Àú¿¡ °üÇÑ º¯¼ö, °´Ã¼
+    Magician magician;
+    Warrior warrior;
+    int magician_x = 0;       // ¸¶¹ı»ç °¡·ÎÃà À§Ä¡
+    int magician_y = 0;       // ¸¶¹ı»ç ¼¼·ÎÃà À§Ä¡
+    int warrior_x = 0;        // Àü»ç °¡·ÎÃà À§Ä¡
+    int warrior_y = 0;        // Àü»ç ¼¼·ÎÃà À§Ä¡
+    bool m_turn = true;       // ´©±¸ Â÷·ÊÀÎÁö Ä«¿îÅÍ
+    string turn = "magician"; // ´©±¸ÀÎÁö ¹®ÀÚ Ãâ·Â º¯¼ö
+    magician.GetHP();
+    warrior.GetHP();
 
-    // ê²Œì„ ì‹œì‘
+    // °ÔÀÓ ½ÃÀÛ
     while (1)
-    { // ì‚¬ìš©ìì—ê²Œ ê³„ì† ì…ë ¥ë°›ê¸° ìœ„í•´ ë¬´í•œ ë£¨í”„
+    { // »ç¿ëÀÚ¿¡°Ô °è¼Ó ÀÔ·Â¹Ş±â À§ÇØ ¹«ÇÑ ·çÇÁ
 
-        // ì‚¬ìš©ìì˜ ì…ë ¥ì„ ì €ì¥í•  ë³€ìˆ˜
+        User *turn_user; // ¸¶¹ı»ç¿Í Àü»çÀÇ À§Ä¡¸¦ Æ÷ÀÎÅÍ¸¦ ÀÌ¿ëÇØ ºÎ¸ğÅ¬·¡½º¿¡ µû·Î ÀúÀå
+        int *turn_x, *turn_y;
+        // Çö Â÷·Ê ÁÂÇ¥ ºÒ·¯¿À±â
+        if (m_turn == true)
+        {
+            turn_user = &magician;
+            turn_x = &magician_x;
+            turn_y = &magician_y;
+        }
+        else
+        {
+            turn_user = &warrior;
+            turn_x = &warrior_x;
+            turn_y = &warrior_y;
+        }
+
+        // »ç¿ëÀÚÀÇ ÀÔ·ÂÀ» ÀúÀåÇÒ º¯¼ö
         string user_input = "";
 
-        cout << "ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•˜ì„¸ìš” (ìƒ,í•˜,ì¢Œ,ìš°,ì§€ë„,ì •ë³´,ì¢…ë£Œ): ";
+        cout << turn << "ÀÇ Â÷·ÊÀÔ´Ï´Ù. ";
+        cout << "¸í·É¾î¸¦ ÀÔ·ÂÇÏ¼¼¿ä (»ó,ÇÏ,ÁÂ,¿ì,Áöµµ,Á¤º¸,Á¾·á): ";
         cin >> user_input;
 
-        // í”Œë ˆì´ì–´ ìƒí•˜ì¢Œìš° ì›€ì§ì„ ê°„ê²°í™”
-        if (user_input == "ìƒ")
+        // ÇÃ·¹ÀÌ¾î »óÇÏÁÂ¿ì ¿òÁ÷ÀÓ °£°áÈ­
+        if (user_input == "»ó")
         {
-            movePlayer(user_x, user_y, 0, -1, map, user);
+            movePlayer(*turn_x, *turn_y, 0, -1, map, *turn_user);
         }
-        else if (user_input == "í•˜")
+        else if (user_input == "ÇÏ")
         {
-            movePlayer(user_x, user_y, 0, 1, map, user);
+            movePlayer(*turn_x, *turn_y, 0, 1, map, *turn_user);
         }
-        else if (user_input == "ì¢Œ")
+        else if (user_input == "ÁÂ")
         {
-            movePlayer(user_x, user_y, -1, 0, map, user);
+            movePlayer(*turn_x, *turn_y, -1, 0, map, *turn_user);
         }
-        else if (user_input == "ìš°")
+        else if (user_input == "¿ì")
         {
-            movePlayer(user_x, user_y, 1, 0, map, user);
+            movePlayer(*turn_x, *turn_y, 1, 0, map, *turn_user);
         }
-        else if (user_input == "ì§€ë„")
+        else if (user_input == "Áöµµ")
         {
-            displayMap(map, user_x, user_y);
-        }
-        else if (user_input == "ì •ë³´")
-        {
-            cout << user << endl;
+            displayMap(map, magician_x, magician_y, warrior_x, warrior_y);
             continue;
         }
-        else if (user_input == "ì¢…ë£Œ")
+        else if (user_input == "Á¤º¸")
         {
-            cout << "ì¢…ë£Œí•©ë‹ˆë‹¤.";
+            cout << *turn_user << endl;
+            continue;
+        }
+        else if (user_input == "Á¾·á")
+        {
+            cout << "Á¾·áÇÕ´Ï´Ù.";
             break;
         }
         else
         {
-            cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤." << endl;
+            cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù." << endl;
             continue;
         }
-        checkState(map, user_x, user_y, user);
+        checkState(map, *turn_x, *turn_y, *turn_user);
+        displayMap(map, magician_x, magician_y, warrior_x, warrior_y);
 
-        // ëª©ì ì§€ì— ë„ë‹¬í–ˆëŠ”ì§€ ì²´í¬
-        bool finish = checkGoal(map, user_x, user_y);
+        // ¸ñÀûÁö¿¡ µµ´ŞÇß´ÂÁö Ã¼Å©
+        bool finish = checkGoal(map, *turn_x, *turn_y);
         if (finish == true)
         {
-            cout << "ëª©ì ì§€ì— ë„ì°©í–ˆìŠµë‹ˆë‹¤! ì¶•í•˜í•©ë‹ˆë‹¤!" << endl;
-            cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
+            cout << turn << "ÀÌ ¸ñÀûÁö¿¡ µµÂøÇß½À´Ï´Ù! ÃàÇÏÇÕ´Ï´Ù!" << endl;
+            cout << "°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù." << endl;
             break;
         }
 
-        // HPê°€ 0ì¸ì§€ í™•ì¸
-        if (CheckUser(user) == false)
+        // HP°¡ 0ÀÎÁö È®ÀÎ
+        if (CheckUser(*turn_user) == false)
         {
-            cout << " HPê°€ 0 ì´í•˜ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤. ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤." << endl;
-            cout << " ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤." << endl;
+            cout << turn << " ÀÇ HP°¡ 0 ÀÌÇÏ°¡ µÇ¾ú½À´Ï´Ù. ½ÇÆĞÇß½À´Ï´Ù." << endl;
+            cout << " °ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù." << endl;
             break;
+        }
+        // Â÷·Ê º¯°æ
+        if (m_turn == true)
+        {
+            m_turn = false;
+            turn = "warrior";
+        }
+        else
+        {
+            m_turn = true;
+            turn = "magician";
         }
     }
-
     return 0;
 }
 
-// í”Œë ˆì´ì–´ ì›€ì§ì„(ìƒí•˜ì¢Œìš°) ê°„ê²°í™” í•¨ìˆ˜
-// í¬ì¸í„°ë¥¼ ì‚¬ìš©í•´ í•¨ìˆ˜ ë°–ì˜ ì¢Œí‘œê¹Œì§€ ì˜í–¥ì´ ë¯¸ì¹˜ê²Œí•¨
+// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ(»óÇÏÁÂ¿ì) °£°áÈ­ ÇÔ¼ö
+// Æ÷ÀÎÅÍ¸¦ »ç¿ëÇØ ÇÔ¼ö ¹ÛÀÇ ÁÂÇ¥±îÁö ¿µÇâÀÌ ¹ÌÄ¡°ÔÇÔ
 void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user)
 {
     int new_x = user_x + ax;
@@ -105,22 +141,21 @@ void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &m
 
     if (checkXY(new_x, mapX, new_y, mapY) == false)
     {
-        cout << "ë§µì„ ë²—ì–´ë‚¬ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ëŒì•„ê°‘ë‹ˆë‹¤." << endl;
+        cout << "¸ÊÀ» ¹ş¾î³µ½À´Ï´Ù. ´Ù½Ã µ¹¾Æ°©´Ï´Ù." << endl;
     }
     else
     {
         user_x = new_x;
         user_y = new_y;
-        user.DeCreaseHP(1); // ì •ìƒ ì´ë™ ì‹œ HP 1 ê°ì†Œ
+        user.DeCreaseHP(1); // Á¤»ó ÀÌµ¿ ½Ã HP 1 °¨¼Ò
         if (ay == -1)
-            cout << "ìœ„ë¡œ í•œ ì¹¸ ì˜¬ë¼ê°‘ë‹ˆë‹¤." << endl;
+            cout << "À§·Î ÇÑ Ä­ ¿Ã¶ó°©´Ï´Ù." << endl;
         else if (ay == 1)
-            cout << "ì•„ë˜ë¡œ í•œ ì¹¸ ë‚´ë ¤ê°‘ë‹ˆë‹¤." << endl;
+            cout << "¾Æ·¡·Î ÇÑ Ä­ ³»·Á°©´Ï´Ù." << endl;
         else if (ax == -1)
-            cout << "ì™¼ìª½ìœ¼ë¡œ í•œ ì¹¸ ì´ë™í•©ë‹ˆë‹¤." << endl;
+            cout << "¿ŞÂÊÀ¸·Î ÇÑ Ä­ ÀÌµ¿ÇÕ´Ï´Ù." << endl;
         else if (ax == 1)
-            cout << "ì˜¤ë¥¸ìª½ìœ¼ë¡œ í•œ ì¹¸ ì´ë™í•©ë‹ˆë‹¤." << endl;
-        displayMap(map, user_x, user_y);
+            cout << "¿À¸¥ÂÊÀ¸·Î ÇÑ Ä­ ÀÌµ¿ÇÕ´Ï´Ù." << endl;
     }
 }
 
@@ -132,16 +167,27 @@ bool CheckUser(User user)
         return false;
 }
 
-// ì§€ë„ì™€ ì‚¬ìš©ì ìœ„ì¹˜ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
-void displayMap(vector<vector<int>> &map, int user_x, int user_y)
+// Áöµµ¿Í »ç¿ëÀÚ À§Ä¡ Ãâ·ÂÇÏ´Â ÇÔ¼ö
+void displayMap(vector<vector<int>> &map, int m_x, int m_y, int w_x, int w_y)
 {
     for (int i = 0; i < mapY; i++)
     {
         for (int j = 0; j < mapX; j++)
         {
-            if (i == user_y && j == user_x)
+            if (i == m_y && j == m_x && i == w_y && j == w_x)
             {
-                cout << " USER |"; // ì–‘ ì˜† 1ì¹¸ ê³µë°±
+                // µÎ Ä³¸¯ÅÍ°¡ °°Àº À§Ä¡¿¡ ÀÖÀ» ¶§
+                cout << " with |";
+            }
+            else if (i == m_y && j == m_x)
+            {
+                // ¸¶¹ı»çÀÇ À§Ä¡
+                cout << "   M   |";
+            }
+            else if (i == w_y && j == w_x)
+            {
+                // Àü»çÀÇ À§Ä¡
+                cout << "   W   |";
             }
             else
             {
@@ -149,19 +195,19 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y)
                 switch (posState)
                 {
                 case 0:
-                    cout << "      |"; // 6ì¹¸ ê³µë°±
+                    cout << "      |"; // 6Ä­ °ø¹é
                     break;
                 case 1:
-                    cout << "ì•„ì´í…œ|";
+                    cout << "¾ÆÀÌÅÛ|";
                     break;
                 case 2:
-                    cout << "  ì   |"; // ì–‘ ì˜† 2ì¹¸ ê³µë°±
+                    cout << "  Àû  |"; // ¾ç ¿· 2Ä­ °ø¹é
                     break;
                 case 3:
-                    cout << " í¬ì…˜ |"; // ì–‘ ì˜† 1ì¹¸ ê³µë°±
+                    cout << " Æ÷¼Ç |"; // ¾ç ¿· 1Ä­ °ø¹é
                     break;
                 case 4:
-                    cout << "ëª©ì ì§€|";
+                    cout << "¸ñÀûÁö|";
                     break;
                 }
             }
@@ -171,7 +217,7 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y)
     }
 }
 
-// ì´ë™í•˜ë ¤ëŠ” ê³³ì´ ìœ íš¨í•œ ì¢Œí‘œì¸ì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
+// ÀÌµ¿ÇÏ·Á´Â °÷ÀÌ À¯È¿ÇÑ ÁÂÇ¥ÀÎÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö
 bool checkXY(int user_x, int mapX, int user_y, int mapY)
 {
     bool checkFlag = false;
@@ -182,10 +228,10 @@ bool checkXY(int user_x, int mapX, int user_y, int mapY)
     return checkFlag;
 }
 
-// ìœ ì €ì˜ ìœ„ì¹˜ê°€ ëª©ì ì§€ì¸ì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
+// À¯ÀúÀÇ À§Ä¡°¡ ¸ñÀûÁöÀÎÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö
 bool checkGoal(vector<vector<int>> &map, int user_x, int user_y)
 {
-    // ëª©ì ì§€ ë„ì°©í•˜ë©´
+    // ¸ñÀûÁö µµÂøÇÏ¸é
     if (map[user_y][user_x] == 4)
     {
         return true;
@@ -193,22 +239,22 @@ bool checkGoal(vector<vector<int>> &map, int user_x, int user_y)
     return false;
 }
 
-// ìœ ì €ì˜ ìœ„ì¹˜ë¥¼ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+// À¯ÀúÀÇ À§Ä¡¸¦ È®ÀÎÇÏ´Â ÇÔ¼ö
 void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user)
 {
     if (map[user_y][user_x] == 1)
     {
-        cout << "ì•„ì´í…œì´ ìˆìŠµë‹ˆë‹¤." << endl;
+        cout << "¾ÆÀÌÅÛÀÌ ÀÖ½À´Ï´Ù." << endl;
         user.InCreaseItem(1);
     }
     if (map[user_y][user_x] == 2)
     {
-        cout << "ì ì´ ìˆìŠµë‹ˆë‹¤. HPê°€ 2 ì¤„ì–´ë“­ë‹ˆë‹¤" << endl;
-        user.DeCreaseHP(2); // ì ê³¼ ì¡°ìš° í›„ HP 2ê°ì†Œ
+        cout << "ÀûÀÌ ÀÖ½À´Ï´Ù. HP°¡ 2 ÁÙ¾îµì´Ï´Ù" << endl;
+        user.DeCreaseHP(2); // Àû°ú Á¶¿ì ÈÄ HP 2°¨¼Ò
     }
     if (map[user_y][user_x] == 3)
     {
-        cout << "í¬ì…˜ì´ ìˆìŠµë‹ˆë‹¤. HPê°€ 2 ì¦ê°€í•©ë‹ˆë‹¤" << endl;
-        user.InCreaseHP(2); // í¬ì…˜ ì–»ì€ í›„ HP 2ì¦ê°€
+        cout << "Æ÷¼ÇÀÌ ÀÖ½À´Ï´Ù. HP°¡ 2 Áõ°¡ÇÕ´Ï´Ù" << endl;
+        user.InCreaseHP(2); // Æ÷¼Ç ¾òÀº ÈÄ HP 2Áõ°¡
     }
 }

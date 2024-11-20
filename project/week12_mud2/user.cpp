@@ -27,8 +27,21 @@ int User::GetHP()
 
 ostream &operator<<(ostream &os, const User &user)
 {
-    os << "í˜„ìž¬ HPëŠ” " << user.health << " ì´ê³ , ë¨¹ì€ ì•„ì´í…œì€ ì´ " << user.itemCnt << " ê°œ ìž…ë‹ˆë‹¤" << endl;
+    os << "ÇöÀç HP´Â " << user.health << " ÀÌ°í, ¸ÔÀº ¾ÆÀÌÅÛÀº ÃÑ " << user.itemCnt << " °³ ÀÔ´Ï´Ù" << endl;
     return os;
 }
 
-void DoAttack
+void User::DoAttack()
+{
+    cout << "°ø°ÝÇÕ´Ï´Ù" << endl;
+}
+
+void Magician::DoAttack()
+{
+    cout << "¸¶¹ý »ç¿ë" << endl;
+}
+
+void Warrior::DoAttack()
+{
+    cout << "º£±â »ç¿ë" << endl;
+}
