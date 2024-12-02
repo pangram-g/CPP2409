@@ -36,19 +36,23 @@ ostream &operator<<(ostream &os, const User &user)
     cout << "공격합니다" << endl;
 }*/
 
+Magician::Magician() : User() {}
+
 void Magician::DoAttack()
 {
     cout << "마법 사용" << endl;
 }
 
-void Warrior::DoAttack()
-{
-    cout << "베기 사용" << endl;
-}
-
 void Magician::user_name()
 {
     cout << "마법사";
+}
+
+Warrior::Warrior() : User() {}
+
+void Warrior::DoAttack()
+{
+    cout << "베기 사용" << endl;
 }
 
 void Warrior::user_name()

@@ -10,7 +10,7 @@ void displayMap(vector<vector<int>> &map, int user_x, int user_y, int num);
 bool checkGoal(vector<vector<int>> &map, int user_x, int user_y);
 void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user);
 void movePlayer(int &user_x, int &user_y, int ax, int ay, vector<vector<int>> &map, User &user);
-bool CheckUser(User user);
+bool CheckUser(User *user);
 
 // 메인  함수
 int main()
@@ -29,6 +29,7 @@ int main()
     int turn_y = 0; // 세로축 위치
     User *user; // 단일 유저 객체 생성
 
+    // 캐릭터 선택
     while (1)
     {
         cout << "어떤 캐릭터로 진행하시겠습니까?(전사, 마법사)" << endl;
@@ -58,8 +59,7 @@ int main()
         // 사용자의 입력을 저장할 변수
         string user_input = "";
         user->user_name();
-        cout << "의 차례입니다. ";
-        cout << "명령어를 입력하세요 (상,하,좌,우,공격,지도,정보,종료): ";
+        cout << "의 차례입니다. 명령어를 입력하세요 (상,하,좌,우,공격,지도,정보,종료): ";
         cin >> user_input;
 
         // 플레이어 상하좌우 움직임 간결화
@@ -81,7 +81,7 @@ int main()
         }
         else if (user_input == "공격")
         {
-            // DoAttack;
+            user-> DoAttack();
         }
         else if (user_input == "지도")
         {
@@ -90,7 +90,7 @@ int main()
         }
         else if (user_input == "정보")
         {
-            cout << user_u << endl;
+            cout << *user << endl;
             continue;
         }
         else if (user_input == "종료")
@@ -116,13 +116,15 @@ int main()
         }
 
         // HP가 0인지 확인
-        /*if (CheckUser(user) == false)
+        if (CheckUser(user) == false)
         {
-            cout << user << " 의 HP가 0 이하가 되었습니다. 실패했습니다." << endl;
+            user->user_name();
+            cout <<" 의 HP가 0 이하가 되었습니다. 실패했습니다." << endl;
             cout << " 게임을 종료합니다." << endl;
             break;
-        }*/
+        }
     }
+    delete user;
     return 0;
 }
 
