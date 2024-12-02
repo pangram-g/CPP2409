@@ -15,38 +15,70 @@ bool CheckUser(User user);
 // 메인  함수
 int main()
 {
+    //map.txt 파일 불러와 읽기
+    vector<vector<int>> map; // 2차원 벡터로 맵 데이터를 저장
+    ifstream is("map.txt");
+
+    if (!is)
+    {
+        cerr << "파일을 여는데 실패했습니다." << endl;
+        return 1;
+    }
+
+    vector<int> row;
+    int value;
+    int columnCount = 0;
+
+    while (is >> value)
+    { // 공백을 기준으로 숫자 읽기
+        row.push_back(value);
+        columnCount++;
+
+        // 한 줄(행)이 끝나면 map에 추가하고 초기화
+        if (columnCount == mapX)
+        {
+            map.push_back(row);
+            row.clear();
+            columnCount = 0;
+        }
+    }
     // 0은 빈 공간, 1은 아이템, 2는 적, 3은 포션, 4는 목적지
-    vector<vector<int>> map = {{0, 1, 2, 0, 4},
-                               {1, 0, 0, 2, 0},
-                               {0, 0, 0, 0, 0},
-                               {0, 2, 3, 0, 0},
-                               {3, 0, 0, 0, 2}};
 
     // 유저에 관한 변수, 객체
     string choice;
     int choice_n;
     int turn_x = 0; // 가로축 위치
     int turn_y = 0; // 세로축 위치
-    User *user; // 단일 유저 객체 생성
+    User *user;     // 단일 유저 객체 생성
 
     while (1)
     {
-        cout << "어떤 캐릭터로 진행하시겠습니까?(전사, 마법사)" << endl;
-        cin >> choice;
-        if (choice == "전사")
+        // 예외처리 구문사용
+        try
         {
-            user = new Warrior();
-            choice_n = 2;
-            break;
+            cout << "어떤 캐릭터로 진행하시겠습니까?(전사, 마법사)" << endl;
+            cin >> choice;
+
+            if (choice == "전사")
+            {
+                user = new Warrior();
+                choice_n = 2;
+                break;
+            }
+            else if (choice == "마법사")
+            {
+                user = new Magician();
+                choice_n = 1;
+                break;
+            }
+            else
+            {
+                throw string("잘못된 입력입니다."); // 예외 발생
+            }
         }
-        else if (choice == "마법사")
+        catch (const string &s)
         {
-            user = new Magician();
-            choice_n = 1;
-            break;
-        }
-        else
-        {
+            cout << s << " "; // 예외 처리
             cout << "다시 입력해 주세요" << endl;
         }
     }
@@ -90,7 +122,7 @@ int main()
         }
         else if (user_input == "정보")
         {
-            cout << user_u << endl;
+            cout << user << endl;
             continue;
         }
         else if (user_input == "종료")
@@ -247,14 +279,3 @@ void checkState(vector<vector<int>> &map, int user_x, int user_y, User &user)
         user.InCreaseHP(2); // 포션 얻은 후 HP 2증가
     }
 }
-
-/*Magician magician;
-    Warrior warrior;
-    int magician_x = 0;       // 마법사 가로축 위치
-    int magician_y = 0;       // 마법사 세로축 위치
-    int warrior_x = 0;        // 전사 가로축 위치
-    int warrior_y = 0;        // 전사 세로축 위치
-    bool m_turn = true;       // 누구 차례인지 카운터
-    string turn = "magician"; // 누구인지 문자 출력 변수
-    magician.GetHP();
-    warrior.GetHP();*/

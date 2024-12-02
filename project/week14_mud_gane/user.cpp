@@ -25,6 +25,11 @@ int User::GetHP()
     return health;
 }
 
+int User::GetItem()
+{
+    return itemCnt;
+}
+
 ostream &operator<<(ostream &os, const User &user)
 {
     os << "현재 HP는 " << user.health << " 이고, 먹은 아이템은 총 " << user.itemCnt << " 개 입니다" << endl;

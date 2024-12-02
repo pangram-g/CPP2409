@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 class User
@@ -24,22 +25,15 @@ public:
 class Magician : public User
 {
 public:
-    void user_name()
-{
-    cout << "마법사";
-}
+    void user_name();
     void DoAttack();
 };
 
 class Warrior : public User
 {
 public:
-    void user_name(){
-    cout << "전사";
-};
-    void DoAttack(){
-    cout << "베기 사용" << endl;
-};
+    void user_name();
+    void DoAttack();
 };
 
 ostream &operator<<(ostream &os, const User &user);
